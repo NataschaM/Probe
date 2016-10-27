@@ -125,6 +125,6 @@
 	<scm>
 		<url>http://github.com/NataschaM/Probe</url>
 		<connection>scm:git:https://github.com/NataschaM/Probe.git</connection>
-		<tag>v1.0.0</tag>
+		<developerConnection>scm:git:https://github.com/NataschaM/Probe.git</developerConnection>
 	</scm>
 </project>
