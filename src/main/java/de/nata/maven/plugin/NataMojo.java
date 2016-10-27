@@ -129,7 +129,7 @@ public class NataMojo extends AbstractMojo {
 					allProjects = scanAllProjects(path);
 				}
 				
-				localRepository.setUrl("/home/nata/workspace-web");
+//				localRepository.setUrl("/home/nata/workspace-web");
 				
 				Artifact pomArtifact = repositorySystem.createProjectArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion());
 				try {

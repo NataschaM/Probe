@@ -73,7 +73,6 @@
 					<artifactId>maven-plugin-plugin</artifactId>
 					<version>3.5</version>
 					<configuration>
-						<!-- see https://issues.apache.org/jira/browse/MNG-5346 -->
 						<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
 					</configuration>
 					<executions>
@@ -84,13 +83,6 @@
 							</goals>
 							<phase>process-classes</phase>
 						</execution>
-						<!-- <execution> -->
-						<!-- <id>help-descriptor</id> -->
-						<!-- <goals> -->
-						<!-- <goal>helpmojo</goal> -->
-						<!-- </goals> -->
-						<!-- <phase>process-classes</phase> -->
-						<!-- </execution> -->
 					</executions>
 				</plugin>
 				<plugin>
@@ -116,4 +108,8 @@
 		</pluginManagement>
 	</build>
 
+	<scm>
+		<url>http://github.com/NataschaM/Probe</url>
+		<connection>scm:git:https://github.com/NataschaM/Probe.git</connection>
+	</scm>
 </project>
