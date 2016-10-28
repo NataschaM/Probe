@@ -156,7 +156,7 @@ public class NataMojo extends AbstractMojo {
 		
 		List<String> actGoals = new ArrayList<String>();
 		actGoals.add("release:clean");
-		actGoals.add("release:prepare -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}");
+		actGoals.add("release:prepare");
 		actGoals.add("release:perform");
 		actGoals.add("deploy");
 
