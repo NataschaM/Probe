@@ -118,9 +118,11 @@ public class NataMojo extends AbstractMojo {
 
 		@SuppressWarnings("unchecked")
 		List<Dependency> deps = project.getDependencies();
-		String path = "/home/nata/workspace-web";
+		String path = "/home/nata/workspace-web/Graphs";
 
 		getLog().info("*********************************");
+		
+		getLog().info(project.getScm().getUrl());
 		for (Dependency dep : deps) {
 			getLog().info(dep.getArtifactId() + " " + dep.getVersion());
 			if (dep.getVersion().endsWith("SNAPSHOT")) {
@@ -128,26 +130,22 @@ public class NataMojo extends AbstractMojo {
 				if (allProjects == null) {
 					allProjects = scanAllProjects(path);
 				}
-				
-//				localRepository.setUrl("/home/nata/workspace-web");
-				
-				Artifact pomArtifact = repositorySystem.createProjectArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion());
-				try {
-					MavenProject project = mavenProjectBuilder.buildFromRepository(pomArtifact
-					                          , remoteArtifactRepositories, localRepository);
-					getLog().info(project.getModel().getPomFile().toPath().toString());
-				} catch (ProjectBuildingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+								
+//				Artifact pomArtifact = repositorySystem.createProjectArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion());
+//				try {
+//					MavenProject project = mavenProjectBuilder.buildFromRepository(pomArtifact
+//					                          , remoteArtifactRepositories, localRepository);
+//					getLog().info(project.getModel().getPomFile().toPath().toString());
+//				} catch (ProjectBuildingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 				
 				MavenProject actProject = allProjects.get(dep.getArtifactId());
 				getLog().info("Akt Project: " + dep.getArtifactId());
 
 				List<String> goals = new ArrayList<String>();
-				goals.add("clean");
 				goals.add("de.nata.maven.plugin:nata-maven-plugin:nata");
-				goals.add("deploy");
 
 				MavenExecutionRequest req = new DefaultMavenExecutionRequest();
 				req.setPom(actProject.getModel().getPomFile());
@@ -164,6 +162,27 @@ public class NataMojo extends AbstractMojo {
 
 			}
 		}
+		
+		List<String> actGoals = new ArrayList<String>();
+		actGoals.add("clean");
+		actGoals.add("release:clean");
+		actGoals.add("release:prepare -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}");
+		actGoals.add("release:perform");
+		actGoals.add("deploy");
+
+		MavenExecutionRequest req = new DefaultMavenExecutionRequest();
+		req.setPom(project.getModel().getPomFile());
+		req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
+		req.setGoals(actGoals);
+		req.setProxies(session.getSettings().getProxies());
+		req.setMirrors(session.getSettings().getMirrors());
+		req.setLocalRepository(localRepository);
+		req.setRemoteRepositories(remoteArtifactRepositories);
+		req.setPluginArtifactRepositories(pluginArtifactRepositories);
+		MavenExecutionResult result = maven.execute(req);
+		
+		getLog().info(result.getProject().getVersion());
+		
 		getLog().info("*********************************");
 
 		// Process theProcess = null;
