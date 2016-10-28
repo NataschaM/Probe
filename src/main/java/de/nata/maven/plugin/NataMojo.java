@@ -73,7 +73,6 @@ public class NataMojo extends AbstractMojo {
 			model.setPomFile(pom);
 
 			depProject = new MavenProject(model);
-			getLog().info("Neues Projekt " + depProject.getArtifactId());
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,6 +120,8 @@ public class NataMojo extends AbstractMojo {
 		String path = "/home/nata/workspace-web/Graphs";
 
 		getLog().info("*********************************");
+		getLog().info("Akt Projekt: " + project.getArtifactId());
+		
 		
 		getLog().info(project.getScm().getUrl());
 		for (Dependency dep : deps) {
@@ -130,19 +131,9 @@ public class NataMojo extends AbstractMojo {
 				if (allProjects == null) {
 					allProjects = scanAllProjects(path);
 				}
-								
-//				Artifact pomArtifact = repositorySystem.createProjectArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion());
-//				try {
-//					MavenProject project = mavenProjectBuilder.buildFromRepository(pomArtifact
-//					                          , remoteArtifactRepositories, localRepository);
-//					getLog().info(project.getModel().getPomFile().toPath().toString());
-//				} catch (ProjectBuildingException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 				
 				MavenProject actProject = allProjects.get(dep.getArtifactId());
-				getLog().info("Akt Project: " + dep.getArtifactId());
+				getLog().info("Snapshot-Project: " + dep.getArtifactId());
 
 				List<String> goals = new ArrayList<String>();
 				goals.add("de.nata.maven.plugin:nata-maven-plugin:nata");
@@ -164,7 +155,6 @@ public class NataMojo extends AbstractMojo {
 		}
 		
 		List<String> actGoals = new ArrayList<String>();
-		actGoals.add("clean");
 		actGoals.add("release:clean");
 		actGoals.add("release:prepare -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}");
 		actGoals.add("release:perform");
