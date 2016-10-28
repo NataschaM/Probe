@@ -184,17 +184,6 @@ public class NataMojo extends AbstractMojo {
 		getLog().info(result.getProject().getVersion());
 		
 		getLog().info("*********************************");
-
-		// Process theProcess = null;
-
-		// try {
-		// theProcess = Runtime.getRuntime().exec("mvn clean install");
-		// theProcess.waitFor();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
 	}
 
 }
