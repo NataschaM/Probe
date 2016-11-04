@@ -132,14 +132,14 @@ public class NataMojo extends AbstractMojo {
 		goals.add("scm:checkin -Dmessage=\"checkin\"");
 
 		MavenExecutionRequest req = new DefaultMavenExecutionRequest();
-		req.setPom(project.getModel().getPomFile());
-		req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
-		req.setGoals(goals);
-		req.setProxies(session.getSettings().getProxies());
-		req.setMirrors(session.getSettings().getMirrors());
-		req.setLocalRepository(localRepository);
-		req.setRemoteRepositories(remoteArtifactRepositories);
-		req.setPluginArtifactRepositories(pluginArtifactRepositories);
+		req = req.setPom(project.getModel().getPomFile());
+		req = req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
+		req = req.setGoals(goals);
+		req = req.setProxies(session.getSettings().getProxies());
+		req = req.setMirrors(session.getSettings().getMirrors());
+		req = req.setLocalRepository(localRepository);
+		req = req.setRemoteRepositories(remoteArtifactRepositories);
+		req = req.setPluginArtifactRepositories(pluginArtifactRepositories);
 		MavenExecutionResult result = maven.execute(req);
 
 		getLog().info("*********************************");
