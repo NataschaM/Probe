@@ -124,6 +124,26 @@ public class NataMojo extends AbstractMojo {
 		
 		
 		getLog().info(project.getScm().getUrl());
+		getLog().info("Führe versions für " + project.getArtifactId() + " aus.");
+		
+		List<String> goals = new ArrayList<String>();
+		goals.add("versions:use-next-versions -Dincludes=de.ruv.*,de.nata.*");
+		goals.add("versions:commit");
+		goals.add("scm:checkin -Dmessage=\"checkin\"");
+
+		MavenExecutionRequest req = new DefaultMavenExecutionRequest();
+		req.setPom(project.getModel().getPomFile());
+		req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
+		req.setGoals(goals);
+		req.setProxies(session.getSettings().getProxies());
+		req.setMirrors(session.getSettings().getMirrors());
+		req.setLocalRepository(localRepository);
+		req.setRemoteRepositories(remoteArtifactRepositories);
+		req.setPluginArtifactRepositories(pluginArtifactRepositories);
+		MavenExecutionResult result = maven.execute(req);
+
+		getLog().info("*********************************");
+		
 		for (Dependency dep : deps) {
 			getLog().info(dep.getArtifactId() + " " + dep.getVersion());
 			if (dep.getVersion().endsWith("SNAPSHOT")) {
@@ -135,10 +155,10 @@ public class NataMojo extends AbstractMojo {
 				MavenProject actProject = allProjects.get(dep.getArtifactId());
 				getLog().info("Snapshot-Project: " + dep.getArtifactId());
 
-				List<String> goals = new ArrayList<String>();
+				goals = new ArrayList<String>();
 				goals.add("de.nata.maven.plugin:nata-maven-plugin:nata");
 
-				MavenExecutionRequest req = new DefaultMavenExecutionRequest();
+				req = new DefaultMavenExecutionRequest();
 				req.setPom(actProject.getModel().getPomFile());
 				req.setBaseDirectory(actProject.getModel().getPomFile().getParentFile());
 				req.setGoals(goals);
@@ -147,7 +167,7 @@ public class NataMojo extends AbstractMojo {
 				req.setLocalRepository(localRepository);
 				req.setRemoteRepositories(remoteArtifactRepositories);
 				req.setPluginArtifactRepositories(pluginArtifactRepositories);
-				MavenExecutionResult result = maven.execute(req);
+				result = maven.execute(req);
 				
 				getLog().info(result.getProject().getVersion());
 
@@ -160,7 +180,7 @@ public class NataMojo extends AbstractMojo {
 		actGoals.add("release:perform");
 		actGoals.add("deploy");
 
-		MavenExecutionRequest req = new DefaultMavenExecutionRequest();
+		req = new DefaultMavenExecutionRequest();
 		req.setPom(project.getModel().getPomFile());
 		req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
 		req.setGoals(actGoals);
@@ -169,7 +189,7 @@ public class NataMojo extends AbstractMojo {
 		req.setLocalRepository(localRepository);
 		req.setRemoteRepositories(remoteArtifactRepositories);
 		req.setPluginArtifactRepositories(pluginArtifactRepositories);
-		MavenExecutionResult result = maven.execute(req);
+		result = maven.execute(req);
 		
 		getLog().info(result.getProject().getVersion());
 		
