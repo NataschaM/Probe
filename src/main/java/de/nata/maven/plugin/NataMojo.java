@@ -127,6 +127,8 @@ public class NataMojo extends AbstractMojo {
 		getLog().info("Führe versions für " + project.getArtifactId() + " aus.");
 		
 		List<String> goals = new ArrayList<String>();
+		goals.add("clean");
+		goals.add("install");
 		goals.add("versions:use-next-versions -Dincludes=de.ruv.*,de.nata.*");
 		goals.add("versions:commit");
 		goals.add("scm:checkin -Dmessage=\"checkin\"");
