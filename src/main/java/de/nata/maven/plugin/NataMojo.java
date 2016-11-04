@@ -144,83 +144,83 @@ public class NataMojo extends AbstractMojo {
 
 		getLog().info("*********************************");
 		
-		for (Dependency dep : deps) {
-			getLog().info(dep.getArtifactId() + " " + dep.getVersion());
-			if (dep.getVersion().endsWith("SNAPSHOT")) {
-
-				if (allProjects == null) {
-					allProjects = scanAllProjects(path);
-				}
-				
-				getLog().info("*********************************");
-				getLog().info("Führe nata-plugin für " + dep.getArtifactId() + " aus.");
-				
-				MavenProject actProject = allProjects.get(dep.getArtifactId());
-				getLog().info("Snapshot-Project: " + dep.getArtifactId());
-
-				goals = new ArrayList<String>();
-				goals.add("de.nata.maven.plugin:nata-maven-plugin:nata");
-
-				req = new DefaultMavenExecutionRequest();
-				req.setPom(actProject.getModel().getPomFile());
-				req.setBaseDirectory(actProject.getModel().getPomFile().getParentFile());
-				req.setGoals(goals);
-				req.setProxies(session.getSettings().getProxies());
-				req.setMirrors(session.getSettings().getMirrors());
-				req.setLocalRepository(localRepository);
-				req.setRemoteRepositories(remoteArtifactRepositories);
-				req.setPluginArtifactRepositories(pluginArtifactRepositories);
-				result = maven.execute(req);
-				
-				getLog().info(result.getProject().getVersion());
-				getLog().info("*********************************");
-
-			}
-		}
-		
-		getLog().info("*********************************");
-		getLog().info("Führe versions für " + project.getArtifactId() + " aus.");
-		
-		goals = new ArrayList<String>();
-		goals.add("versions:use-next-versions -Dincludes=de.ruv.*,de.nata.*");
-		goals.add("versions:commit");
-		goals.add("scm:checkin -Dmessage=\"checkin\"");
-
-		req = new DefaultMavenExecutionRequest();
-		req.setPom(project.getModel().getPomFile());
-		req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
-		req.setGoals(goals);
-		req.setProxies(session.getSettings().getProxies());
-		req.setMirrors(session.getSettings().getMirrors());
-		req.setLocalRepository(localRepository);
-		req.setRemoteRepositories(remoteArtifactRepositories);
-		req.setPluginArtifactRepositories(pluginArtifactRepositories);
-		result = maven.execute(req);
-
-		getLog().info("*********************************");
-		
-		getLog().info("*********************************");
-		getLog().info("Führe release-plugin für " + project.getArtifactId() + " aus.");
-		List<String> actGoals = new ArrayList<String>();
-		actGoals.add("release:clean");
-		actGoals.add("release:prepare");
-		actGoals.add("release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}");
-		actGoals.add("deploy");
-
-		req = new DefaultMavenExecutionRequest();
-		req.setPom(project.getModel().getPomFile());
-		req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
-		req.setGoals(actGoals);
-		req.setProxies(session.getSettings().getProxies());
-		req.setMirrors(session.getSettings().getMirrors());
-		req.setLocalRepository(localRepository);
-		req.setRemoteRepositories(remoteArtifactRepositories);
-		req.setPluginArtifactRepositories(pluginArtifactRepositories);
-		result = maven.execute(req);
-		
-		getLog().info(result.getProject().getVersion());
-		
-		getLog().info("*********************************");
+//		for (Dependency dep : deps) {
+//			getLog().info(dep.getArtifactId() + " " + dep.getVersion());
+//			if (dep.getVersion().endsWith("SNAPSHOT")) {
+//
+//				if (allProjects == null) {
+//					allProjects = scanAllProjects(path);
+//				}
+//				
+//				getLog().info("*********************************");
+//				getLog().info("Führe nata-plugin für " + dep.getArtifactId() + " aus.");
+//				
+//				MavenProject actProject = allProjects.get(dep.getArtifactId());
+//				getLog().info("Snapshot-Project: " + dep.getArtifactId());
+//
+//				goals = new ArrayList<String>();
+//				goals.add("de.nata.maven.plugin:nata-maven-plugin:nata");
+//
+//				req = new DefaultMavenExecutionRequest();
+//				req.setPom(actProject.getModel().getPomFile());
+//				req.setBaseDirectory(actProject.getModel().getPomFile().getParentFile());
+//				req.setGoals(goals);
+//				req.setProxies(session.getSettings().getProxies());
+//				req.setMirrors(session.getSettings().getMirrors());
+//				req.setLocalRepository(localRepository);
+//				req.setRemoteRepositories(remoteArtifactRepositories);
+//				req.setPluginArtifactRepositories(pluginArtifactRepositories);
+//				result = maven.execute(req);
+//				
+//				getLog().info(result.getProject().getVersion());
+//				getLog().info("*********************************");
+//
+//			}
+//		}
+//		
+//		getLog().info("*********************************");
+//		getLog().info("Führe versions für " + project.getArtifactId() + " aus.");
+//		
+//		goals = new ArrayList<String>();
+//		goals.add("versions:use-next-versions -Dincludes=de.ruv.*,de.nata.*");
+//		goals.add("versions:commit");
+//		goals.add("scm:checkin -Dmessage=\"checkin\"");
+//
+//		req = new DefaultMavenExecutionRequest();
+//		req.setPom(project.getModel().getPomFile());
+//		req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
+//		req.setGoals(goals);
+//		req.setProxies(session.getSettings().getProxies());
+//		req.setMirrors(session.getSettings().getMirrors());
+//		req.setLocalRepository(localRepository);
+//		req.setRemoteRepositories(remoteArtifactRepositories);
+//		req.setPluginArtifactRepositories(pluginArtifactRepositories);
+//		result = maven.execute(req);
+//
+//		getLog().info("*********************************");
+//		
+//		getLog().info("*********************************");
+//		getLog().info("Führe release-plugin für " + project.getArtifactId() + " aus.");
+//		List<String> actGoals = new ArrayList<String>();
+//		actGoals.add("release:clean");
+//		actGoals.add("release:prepare");
+//		actGoals.add("release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}");
+//		actGoals.add("deploy");
+//
+//		req = new DefaultMavenExecutionRequest();
+//		req.setPom(project.getModel().getPomFile());
+//		req.setBaseDirectory(project.getModel().getPomFile().getParentFile());
+//		req.setGoals(actGoals);
+//		req.setProxies(session.getSettings().getProxies());
+//		req.setMirrors(session.getSettings().getMirrors());
+//		req.setLocalRepository(localRepository);
+//		req.setRemoteRepositories(remoteArtifactRepositories);
+//		req.setPluginArtifactRepositories(pluginArtifactRepositories);
+//		result = maven.execute(req);
+//		
+//		getLog().info(result.getProject().getVersion());
+//		
+//		getLog().info("*********************************");
 	}
 
 }
